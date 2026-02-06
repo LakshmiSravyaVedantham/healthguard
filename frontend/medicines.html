@@ -26,32 +26,83 @@
         </div>
     </nav>
 
-    <main class="max-w-5xl mx-auto px-4 py-8">
+    <main class="max-w-6xl mx-auto px-4 py-8">
         <!-- Parent Selector -->
         <div class="bg-white rounded-xl shadow-md p-4 mb-6">
             <div class="flex items-center gap-4">
                 <label class="text-sm font-medium text-gray-700">Parent ID:</label>
-                <input type="number" id="parentIdInput" class="input-field" style="width:6rem" placeholder="ID" value="">
+                <input type="number" id="parentIdInput" class="input-field" style="width:6rem" placeholder="ID">
                 <button onclick="loadMedicines()" class="btn-primary">Load</button>
             </div>
         </div>
 
-        <div class="grid md:grid-cols-3 gap-6">
-            <!-- Add Medicine Form -->
-            <div class="bg-white rounded-xl shadow-md p-6">
-                <h2 class="text-lg font-bold text-gray-800 mb-4">💊 Add Medicine</h2>
-                <form id="medicineForm" class="space-y-3">
+        <!-- Quick-Add Kits -->
+        <div class="bg-white rounded-xl shadow-md p-6 mb-6">
+            <h2 class="text-lg font-bold text-gray-800 mb-1">⚡ Quick Add — Medicine Kits</h2>
+            <p class="text-sm text-gray-500 mb-4">Add a full set of common medicines in one click</p>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3" id="kitsGrid">
+                <button onclick="addKit('bp')" class="kit-btn" style="background:#fef2f2; border:1px solid #fecaca; border-radius:0.75rem; padding:1rem; text-align:center; cursor:pointer; transition:transform 0.15s;">
+                    <div style="font-size:2rem">🫀</div>
+                    <div class="font-semibold text-sm text-gray-800 mt-1">BP Kit</div>
+                    <div class="text-xs text-gray-500">Amlodipine + Telmisartan</div>
+                </button>
+                <button onclick="addKit('diabetes')" style="background:#fefce8; border:1px solid #fef08a; border-radius:0.75rem; padding:1rem; text-align:center; cursor:pointer; transition:transform 0.15s;">
+                    <div style="font-size:2rem">🩸</div>
+                    <div class="font-semibold text-sm text-gray-800 mt-1">Diabetes Kit</div>
+                    <div class="text-xs text-gray-500">Metformin + Glimepiride</div>
+                </button>
+                <button onclick="addKit('cholesterol')" style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:0.75rem; padding:1rem; text-align:center; cursor:pointer; transition:transform 0.15s;">
+                    <div style="font-size:2rem">💛</div>
+                    <div class="font-semibold text-sm text-gray-800 mt-1">Cholesterol Kit</div>
+                    <div class="text-xs text-gray-500">Atorvastatin + Aspirin</div>
+                </button>
+                <button onclick="addKit('general')" style="background:#eff6ff; border:1px solid #bfdbfe; border-radius:0.75rem; padding:1rem; text-align:center; cursor:pointer; transition:transform 0.15s;">
+                    <div style="font-size:2rem">🛡️</div>
+                    <div class="font-semibold text-sm text-gray-800 mt-1">General Health</div>
+                    <div class="text-xs text-gray-500">Calcium + D3 + Multivitamin</div>
+                </button>
+            </div>
+        </div>
+
+        <!-- Quick-Add Individual Medicines -->
+        <div class="bg-white rounded-xl shadow-md p-6 mb-6">
+            <h2 class="text-lg font-bold text-gray-800 mb-1">💊 Tap to Add Common Medicines</h2>
+            <p class="text-sm text-gray-500 mb-4">Just tap — name, dosage, timing all pre-filled</p>
+
+            <!-- Category tabs -->
+            <div class="flex gap-2 mb-4 flex-wrap">
+                <button onclick="showCategory('all')" class="cat-tab btn-primary" style="font-size:0.75rem" id="tab-all">All</button>
+                <button onclick="showCategory('bp')" class="cat-tab btn-secondary" style="font-size:0.75rem" id="tab-bp">BP</button>
+                <button onclick="showCategory('diabetes')" class="cat-tab btn-secondary" style="font-size:0.75rem" id="tab-diabetes">Diabetes</button>
+                <button onclick="showCategory('heart')" class="cat-tab btn-secondary" style="font-size:0.75rem" id="tab-heart">Heart</button>
+                <button onclick="showCategory('bones')" class="cat-tab btn-secondary" style="font-size:0.75rem" id="tab-bones">Bones/Joints</button>
+                <button onclick="showCategory('vitamins')" class="cat-tab btn-secondary" style="font-size:0.75rem" id="tab-vitamins">Vitamins</button>
+                <button onclick="showCategory('stomach')" class="cat-tab btn-secondary" style="font-size:0.75rem" id="tab-stomach">Stomach</button>
+                <button onclick="showCategory('thyroid')" class="cat-tab btn-secondary" style="font-size:0.75rem" id="tab-thyroid">Thyroid</button>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2" id="presetGrid"></div>
+        </div>
+
+        <!-- Custom Add (collapsed by default) -->
+        <div class="bg-white rounded-xl shadow-md p-6 mb-6">
+            <button onclick="toggleCustomForm()" class="flex items-center gap-2 w-full text-left">
+                <span id="customArrow" style="transition:transform 0.2s">▶</span>
+                <h2 class="text-lg font-bold text-gray-800">Custom Medicine (Manual Entry)</h2>
+            </button>
+            <div id="customFormSection" class="hidden mt-4">
+                <form id="medicineForm" class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block text-xs font-medium text-gray-600 mb-1">Name (English) *</label>
                         <input type="text" id="medName" class="input-field" placeholder="e.g. Amlodipine" required>
                     </div>
                     <div>
                         <label class="block text-xs font-medium text-gray-600 mb-1">Name (Telugu)</label>
-                        <input type="text" id="medNameTelugu" class="input-field" placeholder="e.g. అమ్లోడిపిన్">
+                        <input type="text" id="medNameTelugu" class="input-field" placeholder="తెలుగు పేరు">
                     </div>
                     <div>
                         <label class="block text-xs font-medium text-gray-600 mb-1">Dosage</label>
-                        <input type="text" id="medDosage" class="input-field" placeholder="e.g. 5mg, 1 tablet">
+                        <input type="text" id="medDosage" class="input-field" placeholder="e.g. 5mg">
                     </div>
                     <div>
                         <label class="block text-xs font-medium text-gray-600 mb-1">Time Slot *</label>
@@ -67,24 +118,28 @@
                     </div>
                     <div>
                         <label class="block text-xs font-medium text-gray-600 mb-1">Instructions</label>
-                        <input type="text" id="medInstructions" class="input-field" placeholder="After food, with water">
+                        <input type="text" id="medInstructions" class="input-field" placeholder="After food">
                     </div>
-                    <button type="submit" class="btn-primary" style="width:100%">Add Medicine</button>
+                    <div class="col-span-2">
+                        <button type="submit" class="btn-primary" style="width:100%">Add Medicine</button>
+                    </div>
                 </form>
             </div>
+        </div>
 
-            <!-- Medicine List -->
+        <!-- Current Medicines -->
+        <div class="grid md:grid-cols-3 gap-6">
             <div class="md:col-span-2">
                 <div class="bg-white rounded-xl shadow-md p-6">
-                    <h2 class="text-lg font-bold text-gray-800 mb-4">Medicine Schedule</h2>
+                    <h2 class="text-lg font-bold text-gray-800 mb-4">📋 Current Medicine Schedule</h2>
                     <div id="medicinesList">
                         <p class="text-gray-400 text-center py-8">Enter Parent ID and click Load</p>
                     </div>
                 </div>
-
-                <!-- Adherence Summary -->
-                <div class="bg-white rounded-xl shadow-md p-6 mt-6">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Adherence Summary (7 Days)</h3>
+            </div>
+            <div>
+                <div class="bg-white rounded-xl shadow-md p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Adherence (7 Days)</h3>
                     <div id="adherenceSummary">
                         <p class="text-gray-400 text-center py-4">-</p>
                     </div>
