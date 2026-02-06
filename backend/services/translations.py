@@ -60,36 +60,36 @@ MESSAGES = {
         ),
     },
 
-    # --- Main Menu ---
+    # --- Main Menu (Exercise-first design) ---
     "main_menu": {
         "telugu": (
             "🏥 *HealthGuard Menu*\n\n"
-            "1 - ఆరోగ్య సలహా (Health Tip)\n"
-            "2 - మందు గుర్తు (Medicine Check)\n"
-            "3 - ఆరోగ్య పరిస్థితి (Health Check-in)\n"
-            "4 - వ్యాయామం (Exercise)\n"
-            "5 - అపత్కాల సమాచారం (Emergency)\n"
-            "6 - భాష మార్చండి (Change Language)\n\n"
+            "1 - 🧘 వ్యాయామం (Exercise)\n"
+            "2 - 💡 ఆరోగ్య సలహా (Health Tip)\n"
+            "3 - 😊 ఎలా ఉన్నారు? (How are you?)\n"
+            "4 - 💊 మందులు (Medicines)\n"
+            "5 - 🚨 అపత్కాల సమాచారం (Emergency)\n"
+            "6 - భాష మార్చండి (Language)\n\n"
             "Number type cheyandi."
         ),
         "english": (
             "🏥 *HealthGuard Menu*\n\n"
-            "1 - Health Tip\n"
-            "2 - Medicine Check\n"
-            "3 - Health Check-in\n"
-            "4 - Exercise\n"
-            "5 - Emergency Info\n"
+            "1 - 🧘 Exercise\n"
+            "2 - 💡 Health Tip\n"
+            "3 - 😊 How are you?\n"
+            "4 - 💊 Medicines\n"
+            "5 - 🚨 Emergency Info\n"
             "6 - Change Language\n\n"
             "Type a number."
         ),
         "both": (
             "🏥 *HealthGuard Menu*\n\n"
-            "1 - ఆరోగ్య సలహా (Health Tip)\n"
-            "2 - మందు గుర్తు (Medicine Check)\n"
-            "3 - ఆరోగ్య పరిస్థితి (Health Check-in)\n"
-            "4 - వ్యాయామం (Exercise)\n"
-            "5 - అపత్కాల సమాచారం (Emergency Info)\n"
-            "6 - భాష మార్చండి (Change Language)\n\n"
+            "1 - 🧘 వ్యాయామం / Exercise\n"
+            "2 - 💡 ఆరోగ్య సలహా / Health Tip\n"
+            "3 - 😊 ఎలా ఉన్నారు? / How are you?\n"
+            "4 - 💊 మందులు / Medicines\n"
+            "5 - 🚨 అపత్కాల సమాచారం / Emergency\n"
+            "6 - భాష మార్చండి / Language\n\n"
             "Number type cheyandi / Type a number."
         ),
     },
@@ -109,22 +109,19 @@ MESSAGES = {
     },
     "medicine_confirm": {
         "telugu": (
-            "\nMeeru mandulu teesukunnara?\n"
-            "1 - Anni teesukunnanu ✅\n"
-            "2 - Konni miss ayyayi ⚠️\n"
-            "3 - Inkaa teesukoledu ❌"
+            "\n✅ Teesukunnaru ante 1 press cheyandi.\n"
+            "1 - Teesukunnanu ✅\n"
+            "0 - Menu ki vellandi"
         ),
         "english": (
-            "\nDid you take your medicines?\n"
-            "1 - Took all ✅\n"
-            "2 - Missed some ⚠️\n"
-            "3 - Not yet ❌"
+            "\n✅ Press 1 if you took them.\n"
+            "1 - Done ✅\n"
+            "0 - Back to menu"
         ),
         "both": (
-            "\nMandulu teesukunnara? / Did you take medicines?\n"
-            "1 - Anni teesukunnanu / Took all ✅\n"
-            "2 - Konni miss / Missed some ⚠️\n"
-            "3 - Inkaa ledu / Not yet ❌"
+            "\n✅ Teesukunnaru ante 1 / Press 1 if done.\n"
+            "1 - Done ✅\n"
+            "0 - Menu"
         ),
     },
     "medicine_all_taken": {

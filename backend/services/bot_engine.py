@@ -106,10 +106,10 @@ def _handle_onboard_age(parent: Parent, body: str, db: Session) -> str:
 
 def _handle_main_menu(parent: Parent, body: str, db: Session) -> str:
     menu_handlers = {
-        "1": _show_health_tip,
-        "2": _show_medicine_check,
+        "1": _show_exercise_menu,     # Exercise first!
+        "2": _show_health_tip,
         "3": _show_checkin,
-        "4": _show_exercise_menu,
+        "4": _show_medicine_check,
         "5": _show_emergency,
         "6": _show_language_change,
     }
@@ -151,7 +151,6 @@ def _show_medicine_check(parent: Parent, db: Session) -> str:
 
 
 def _handle_medicine_check(parent: Parent, body: str, db: Session) -> str:
-    today = date.today()
     medicines = (
         db.query(Medicine)
         .filter(Medicine.parent_id == parent.id, Medicine.active == True)
@@ -159,28 +158,16 @@ def _handle_medicine_check(parent: Parent, body: str, db: Session) -> str:
     )
 
     if body == "1":
-        # All taken
+        # Done — auto-log all as taken
         for m in medicines:
             _record_medicine_log(parent.id, m.id, m.time_slot, True, db)
         parent.conversation_state = STATE_MAIN_MENU
         db.commit()
         return get_message("medicine_all_taken", parent.language)
-    elif body == "2":
-        # Missed some
-        for m in medicines:
-            _record_medicine_log(parent.id, m.id, m.time_slot, False, db)
-        _create_alert(parent.id, "medicine_missed",
-                      f"{parent.name} missed some medicines on {today}", db)
-        parent.conversation_state = STATE_MAIN_MENU
-        db.commit()
-        return get_message("medicine_missed", parent.language)
-    elif body == "3":
-        # Not yet
-        parent.conversation_state = STATE_MAIN_MENU
-        db.commit()
-        return get_message("medicine_not_yet", parent.language)
     else:
-        return get_message("medicine_confirm", parent.language)
+        parent.conversation_state = STATE_MAIN_MENU
+        db.commit()
+        return get_message("main_menu", parent.language)
 
 
 def _show_checkin(parent: Parent, db: Session) -> str:
