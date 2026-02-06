@@ -1,8 +1,11 @@
 /**
- * Aarogya Saathi - Shared API wrapper
+ * HealthGuard - Shared API wrapper
  */
 
-const API_BASE = 'http://localhost:8000';
+// Auto-detect: use localhost for dev, or set your deployed backend URL here
+const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? 'http://localhost:8000'
+    : (localStorage.getItem('api_base') || 'http://localhost:8000');
 
 async function apiFetch(path, options = {}) {
     const url = `${API_BASE}${path}`;

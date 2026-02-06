@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: healthguard-api
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: DATABASE_URL
+        value: sqlite:///./aarogya_saathi.db
+      - key: JWT_SECRET
+        generateValue: true
+      - key: APP_ENV
+        value: production
