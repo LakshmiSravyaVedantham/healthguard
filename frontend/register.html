@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - HealthGuard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <nav class="gradient-bg shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <a href="index.html" class="flex items-center gap-2 text-white no-underline">
+                    <span class="text-2xl">🛡️</span>
+                    <h1 class="text-lg font-bold">HealthGuard</h1>
+                </a>
+                <div class="flex items-center gap-1">
+                    <a href="index.html" class="nav-link">Dashboard</a>
+                    <a href="register.html" class="nav-link active">Register</a>
+                    <a href="medicines.html" class="nav-link">Medicines</a>
+                    <a href="checkins.html" class="nav-link">Check-ins</a>
+                    <a href="alerts.html" class="nav-link">Alerts</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-4 py-8">
+        <div class="grid md:grid-cols-2 gap-8">
+            <!-- Register Parent -->
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <div class="flex items-center gap-2 mb-1">
+                    <span class="text-xl">👨‍👩‍👧</span>
+                    <h2 class="text-xl font-bold text-gray-800">Register Parent</h2>
+                </div>
+                <p class="text-gray-500 text-sm mb-6">Add your parent (50+) who will use WhatsApp bot</p>
+
+                <form id="parentForm" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Name *</label>
+                        <input type="text" id="parentName" class="input-field" placeholder="Parent's name" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Phone (with country code) *</label>
+                        <input type="tel" id="parentPhone" class="input-field" placeholder="+919876543210" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Age</label>
+                        <input type="number" id="parentAge" class="input-field" placeholder="65" min="20" max="120">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Language</label>
+                        <select id="parentLanguage" class="input-field">
+                            <option value="both">Telugu + English</option>
+                            <option value="telugu">Telugu</option>
+                            <option value="english">English</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Health Conditions</label>
+                        <input type="text" id="parentConditions" class="input-field" placeholder="BP, Diabetes, etc.">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Emergency Contact Phone</label>
+                        <input type="tel" id="emergencyPhone" class="input-field" placeholder="+919876543210">
+                    </div>
+                    <button type="submit" class="btn-primary" style="width:100%">Register Parent</button>
+                </form>
+
+                <div id="parentResult" class="mt-4 hidden">
+                    <div class="p-4 rounded-lg" style="background:#f0fdf4; border:1px solid #bbf7d0;">
+                        <p class="font-medium text-green-800">Parent registered!</p>
+                        <p class="text-sm text-green-700 mt-1">Parent ID: <span id="registeredParentId" class="font-bold text-lg"></span></p>
+                        <p class="text-sm text-green-600">Use this ID below to create your family account.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Register Family Member -->
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <div class="flex items-center gap-2 mb-1">
+                    <span class="text-xl">🔐</span>
+                    <h2 class="text-xl font-bold text-gray-800">Family Member Account</h2>
+                </div>
+                <p class="text-gray-500 text-sm mb-6">Create your login to access the dashboard</p>
+
+                <form id="familyForm" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Your Name *</label>
+                        <input type="text" id="familyName" class="input-field" placeholder="Your name" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Email *</label>
+                        <input type="email" id="familyEmail" class="input-field" placeholder="you@email.com" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Password *</label>
+                        <input type="password" id="familyPassword" class="input-field" placeholder="Min 6 characters" minlength="6" required>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Your Phone</label>
+                        <input type="tel" id="familyPhone" class="input-field" placeholder="+919876543210">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Parent ID *</label>
+                        <input type="number" id="familyParentId" class="input-field" placeholder="From step 1" required>
+                    </div>
+                    <button type="submit" class="btn-primary" style="width:100%">Create Account</button>
+                </form>
+
+                <div id="familyResult" class="mt-4 hidden">
+                    <div class="p-4 rounded-lg" style="background:#f0fdf4; border:1px solid #bbf7d0;">
+                        <p class="font-medium text-green-800">Account created!</p>
+                        <p class="text-sm text-green-600 mt-1">
+                            <a href="index.html" class="underline font-bold text-indigo-600">Go to Dashboard and Login</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Existing Parents -->
+        <div class="bg-white rounded-xl shadow-md p-6 mt-8">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Registered Parents</h3>
+            <div id="parentsList">
+                <p class="text-gray-400 text-center py-4">Loading...</p>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/api.js"></script>
+    <script src="js/register.js"></script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+sqlalchemy
+python-dotenv
+twilio
+apscheduler
+pydantic
+bcrypt
+python-jose[cryptography]
+python-multipart

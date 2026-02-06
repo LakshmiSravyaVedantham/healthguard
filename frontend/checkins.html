@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check-ins - HealthGuard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <nav class="gradient-bg shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <a href="index.html" class="flex items-center gap-2 text-white no-underline">
+                    <span class="text-2xl">🛡️</span>
+                    <h1 class="text-lg font-bold">HealthGuard</h1>
+                </a>
+                <div class="flex items-center gap-1">
+                    <a href="index.html" class="nav-link">Dashboard</a>
+                    <a href="register.html" class="nav-link">Register</a>
+                    <a href="medicines.html" class="nav-link">Medicines</a>
+                    <a href="checkins.html" class="nav-link active">Check-ins</a>
+                    <a href="alerts.html" class="nav-link">Alerts</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-5xl mx-auto px-4 py-8">
+        <!-- Parent Selector -->
+        <div class="bg-white rounded-xl shadow-md p-4 mb-6">
+            <div class="flex items-center gap-4 flex-wrap">
+                <label class="text-sm font-medium text-gray-700">Parent ID:</label>
+                <input type="number" id="parentIdInput" class="input-field" style="width:6rem" placeholder="ID">
+                <label class="text-sm font-medium text-gray-700">Days:</label>
+                <select id="daysSelect" class="input-field" style="width:8rem">
+                    <option value="7">7 days</option>
+                    <option value="14">14 days</option>
+                    <option value="30" selected>30 days</option>
+                    <option value="90">90 days</option>
+                </select>
+                <button onclick="loadCheckins()" class="btn-primary">Load</button>
+            </div>
+        </div>
+
+        <!-- Summary Cards -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+            <div class="stat-card">
+                <div class="stat-number" style="color:#4f46e5" id="totalCheckins">-</div>
+                <div class="stat-label">Total Check-ins</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" style="color:#16a34a" id="goodDays">-</div>
+                <div class="stat-label">Good Days 😊</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" style="color:#ca8a04" id="okDays">-</div>
+                <div class="stat-label">Okay Days 😐</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" style="color:#dc2626" id="badDays">-</div>
+                <div class="stat-label">Bad Days 😟</div>
+            </div>
+        </div>
+
+        <!-- Feeling Trend Chart -->
+        <div class="bg-white rounded-xl shadow-md p-6 mb-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Feeling Trend</h3>
+            <canvas id="trendChart" height="100"></canvas>
+        </div>
+
+        <!-- Check-in History Table -->
+        <div class="bg-white rounded-xl shadow-md p-6">
+            <h3 class="text-lg font-semibold text-gray-800 mb-4">Check-in History</h3>
+            <div id="checkinTable" class="overflow-x-auto">
+                <p class="text-gray-400 text-center py-8">Enter Parent ID and click Load</p>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/api.js"></script>
+    <script src="js/checkins.js"></script>
+</body>
+</html>

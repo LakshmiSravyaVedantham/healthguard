@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthGuard - Family Health Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+    <!-- LOGIN PAGE (shown when not logged in) -->
+    <div id="loginSection" class="login-hero">
+        <div class="login-card">
+            <div class="text-center mb-8">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-indigo-100 mb-4">
+                    <span class="text-3xl">🛡️</span>
+                </div>
+                <h1 class="text-2xl font-bold text-gray-900">HealthGuard</h1>
+                <p class="text-gray-500 mt-1 text-sm">Keep your parents healthy, from anywhere</p>
+            </div>
+
+            <form id="loginForm" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                    <input type="email" id="loginEmail" class="input-field" placeholder="your@email.com" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                    <input type="password" id="loginPassword" class="input-field" placeholder="Enter password" required>
+                </div>
+                <button type="submit" class="btn-primary" style="width:100%; padding:0.75rem;">Login</button>
+            </form>
+
+            <div class="mt-6 pt-5 border-t border-gray-100 text-center">
+                <p class="text-sm text-gray-500">
+                    New here? <a href="register.html" class="text-indigo-600 font-medium hover:underline">Create an account</a>
+                </p>
+            </div>
+
+            <!-- WhatsApp Setup Info -->
+            <div class="mt-6 p-4 rounded-xl" style="background-color: #f0fdf4; border: 1px solid #bbf7d0;">
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="text-xl">📱</span>
+                    <span class="font-semibold text-sm text-gray-800">Connect via WhatsApp</span>
+                </div>
+                <ol class="text-xs text-gray-600 space-y-1.5 ml-7 list-decimal">
+                    <li>Register your parent on the <a href="register.html" class="text-indigo-600 underline">Register page</a></li>
+                    <li>Save our WhatsApp number: <strong class="whatsapp-green">+1 (415) 523-8886</strong></li>
+                    <li>Send <strong>"join &lt;sandbox-code&gt;"</strong> from parent's phone</li>
+                    <li>Parent sends <strong>"Hi"</strong> and the bot starts!</li>
+                </ol>
+                <p class="text-xs text-gray-400 mt-2 ml-7">Uses Twilio WhatsApp Sandbox for testing</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- DASHBOARD (shown after login) -->
+    <div id="dashboardSection" class="hidden">
+        <!-- Navigation -->
+        <nav class="gradient-bg shadow-lg">
+            <div class="max-w-7xl mx-auto px-4 py-3">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <span class="text-2xl">🛡️</span>
+                        <h1 class="text-lg font-bold text-white">HealthGuard</h1>
+                    </div>
+                    <div class="flex items-center gap-1">
+                        <a href="index.html" class="nav-link active">Dashboard</a>
+                        <a href="register.html" class="nav-link">Register</a>
+                        <a href="medicines.html" class="nav-link">Medicines</a>
+                        <a href="checkins.html" class="nav-link">Check-ins</a>
+                        <a href="alerts.html" class="nav-link">Alerts</a>
+                        <span class="text-white text-xs opacity-70 ml-3 hidden sm:inline" id="userBadge"></span>
+                        <button onclick="logout()" id="logoutBtn" class="nav-link" style="color:#fca5a5;">Logout</button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <main class="max-w-7xl mx-auto px-4 py-8">
+            <!-- Parent Info Header -->
+            <div class="mb-8">
+                <h2 class="text-2xl font-bold text-gray-800" id="parentName">Loading...</h2>
+                <p class="text-gray-500 text-sm" id="parentInfo"></p>
+            </div>
+
+            <!-- Stat Cards -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                <div class="stat-card">
+                    <div class="stat-number" style="color:#16a34a;" id="statFeeling">-</div>
+                    <div class="stat-label">Today's Feeling</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" style="color:#4f46e5;" id="statAdherence">-</div>
+                    <div class="stat-label">Medicine Adherence (7d)</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" style="color:#2563eb;" id="statMedicines">-</div>
+                    <div class="stat-label">Medicines Today</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" style="color:#dc2626;" id="statAlerts">-</div>
+                    <div class="stat-label">Active Alerts</div>
+                </div>
+            </div>
+
+            <!-- Charts Row -->
+            <div class="grid md:grid-cols-2 gap-6 mb-8">
+                <div class="bg-white rounded-xl shadow-md p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Feeling Trend (7 Days)</h3>
+                    <canvas id="feelingChart"></canvas>
+                </div>
+                <div class="bg-white rounded-xl shadow-md p-6">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Medicine Adherence (7 Days)</h3>
+                    <canvas id="adherenceChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Recent Alerts -->
+            <div class="bg-white rounded-xl shadow-md p-6 mb-8">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-semibold text-gray-800">Recent Alerts</h3>
+                    <a href="alerts.html" class="text-indigo-600 text-sm hover:underline">View All</a>
+                </div>
+                <div id="alertsList">
+                    <p class="text-gray-400 text-center py-4">No alerts</p>
+                </div>
+            </div>
+
+            <!-- Today's Medicines -->
+            <div class="bg-white rounded-xl shadow-md p-6 mb-8">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-semibold text-gray-800">Today's Medicines</h3>
+                    <a href="medicines.html" class="text-indigo-600 text-sm hover:underline">Manage</a>
+                </div>
+                <div id="medicinesList">
+                    <p class="text-gray-400 text-center py-4">No medicines scheduled</p>
+                </div>
+            </div>
+
+            <!-- WhatsApp Setup Guide -->
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">📱 WhatsApp Bot Setup</h3>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="font-medium text-gray-700 mb-3">For Testing (Twilio Sandbox)</h4>
+                        <ol class="text-sm text-gray-600 space-y-2 list-decimal ml-5">
+                            <li>Go to <strong>Twilio Console</strong> → Messaging → WhatsApp Sandbox</li>
+                            <li>Note the sandbox number and join code</li>
+                            <li>From parent's WhatsApp, send: <code class="bg-gray-100 px-1.5 py-0.5 rounded text-xs">join &lt;your-code&gt;</code> to the sandbox number</li>
+                            <li>Parent sends <strong>"Hi"</strong> — bot starts onboarding!</li>
+                            <li>Set webhook URL: <code class="bg-gray-100 px-1.5 py-0.5 rounded text-xs">https://your-server/webhook/whatsapp</code></li>
+                        </ol>
+                    </div>
+                    <div>
+                        <h4 class="font-medium text-gray-700 mb-3">For Production</h4>
+                        <ol class="text-sm text-gray-600 space-y-2 list-decimal ml-5">
+                            <li>Apply for a <strong>Twilio WhatsApp Business</strong> number</li>
+                            <li>Set your <code class="bg-gray-100 px-1.5 py-0.5 rounded text-xs">.env</code> with Twilio credentials</li>
+                            <li>Deploy backend and set webhook URL in Twilio</li>
+                            <li>Parent just messages the number — no join code needed!</li>
+                        </ol>
+                        <div class="mt-4 p-3 bg-indigo-50 rounded-lg">
+                            <p class="text-xs text-indigo-700">
+                                <strong>Tip:</strong> Use <code>ngrok http 8000</code> during development to expose your local server to Twilio.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="text-center py-6 text-gray-400 text-sm">
+            HealthGuard - Health Awareness for 50+ Indians 🙏
+        </footer>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>

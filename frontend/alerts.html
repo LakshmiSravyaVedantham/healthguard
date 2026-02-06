@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alerts - HealthGuard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <nav class="gradient-bg shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <a href="index.html" class="flex items-center gap-2 text-white no-underline">
+                    <span class="text-2xl">🛡️</span>
+                    <h1 class="text-lg font-bold">HealthGuard</h1>
+                </a>
+                <div class="flex items-center gap-1">
+                    <a href="index.html" class="nav-link">Dashboard</a>
+                    <a href="register.html" class="nav-link">Register</a>
+                    <a href="medicines.html" class="nav-link">Medicines</a>
+                    <a href="checkins.html" class="nav-link">Check-ins</a>
+                    <a href="alerts.html" class="nav-link active">Alerts</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-5xl mx-auto px-4 py-8">
+        <!-- Parent Selector -->
+        <div class="bg-white rounded-xl shadow-md p-4 mb-6">
+            <div class="flex items-center gap-4">
+                <label class="text-sm font-medium text-gray-700">Parent ID:</label>
+                <input type="number" id="parentIdInput" class="input-field" style="width:6rem" placeholder="ID">
+                <button onclick="loadAlerts()" class="btn-primary">Load</button>
+            </div>
+        </div>
+
+        <!-- Summary -->
+        <div class="grid grid-cols-3 gap-4 mb-6">
+            <div class="stat-card">
+                <div class="stat-number" style="color:#dc2626" id="activeCount">-</div>
+                <div class="stat-label">Active Alerts</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" style="color:#16a34a" id="resolvedCount">-</div>
+                <div class="stat-label">Resolved</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" style="color:#6b7280" id="totalCount">-</div>
+                <div class="stat-label">Total</div>
+            </div>
+        </div>
+
+        <!-- Alerts List -->
+        <div class="bg-white rounded-xl shadow-md p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold text-gray-800">Alert History</h3>
+                <div class="flex gap-2">
+                    <button onclick="filterAlerts('all')" class="btn-secondary" style="font-size:0.8rem">All</button>
+                    <button onclick="filterAlerts('active')" class="btn-danger" style="font-size:0.8rem">Active</button>
+                    <button onclick="filterAlerts('resolved')" class="btn-success" style="font-size:0.8rem">Resolved</button>
+                </div>
+            </div>
+            <div id="alertsList">
+                <p class="text-gray-400 text-center py-8">Enter Parent ID and click Load</p>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/api.js"></script>
+    <script src="js/alerts.js"></script>
+</body>
+</html>
